@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Industrial Energy AI · Technical Assessment Suite</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container topbar__inner">
+        <div>
+          <strong>Industrial Energy AI</strong>
+          <p class="subhead">Technical Assessment Suite</p>
+        </div>
+        <span class="badge">Engineering Mode</span>
+      </div>
+    </header>
+
+    <main class="container app-shell">
+      <section class="card intro">
+        <h1>Plant Utility & Equipment Analysis</h1>
+        <p>
+          Select a module to run first-pass engineering calculations for sizing, compressed-air losses,
+          and energy saving potential.
+        </p>
+      </section>
+
+      <section class="card">
+        <div class="module-switch" role="tablist" aria-label="Analysis modules">
+          <button class="module-btn is-active" data-module="sizing" role="tab" aria-selected="true">Sizing Module</button>
+          <button class="module-btn" data-module="air" role="tab" aria-selected="false">Air Loss Audit</button>
+          <button class="module-btn" data-module="saving" role="tab" aria-selected="false">Energy Saving Module</button>
+        </div>
+      </section>
+
+      <section id="module-sizing" class="card module-panel is-visible" aria-live="polite">
+        <h2>Equipment Sizing Module</h2>
+        <p class="help">Calculates recommended installed capacity and operating energy for rotating equipment.</p>
+        <form id="sizingForm" class="form-grid">
+          <label>Equipment type
+            <select id="sizingEquipment" required>
+              <option value="pump">Pump</option>
+              <option value="compressor">Compressor</option>
+              <option value="fan">Fan / Blower</option>
+              <option value="conveyor">Conveyor</option>
+            </select>
+          </label>
+          <label>Process throughput
+            <input id="throughput" type="number" min="0" step="0.1" required />
+          </label>
+          <label>Utilization (%)
+            <input id="utilization" type="number" min="10" max="100" step="1" value="85" required />
+          </label>
+          <label>Safety margin (%)
+            <input id="margin" type="number" min="0" max="60" step="1" value="20" required />
+          </label>
+          <label>Motor efficiency (%)
+            <input id="efficiency" type="number" min="60" max="99" step="0.1" value="92" required />
+          </label>
+          <label>Operating hours/day
+            <input id="hours" type="number" min="1" max="24" step="1" value="18" required />
+          </label>
+          <label>Power tariff ($/kWh)
+            <input id="powerPrice" type="number" min="0" step="0.001" value="0.11" required />
+          </label>
+          <button type="submit" class="btn">Run sizing calculation</button>
+        </form>
+        <div class="result-grid">
+          <article><h3>Installed capacity</h3><p id="sizingCapacity" class="metric">—</p></article>
+          <article><h3>Motor rating</h3><p id="sizingMotor" class="metric">—</p></article>
+          <article><h3>Daily energy</h3><p id="sizingEnergy" class="metric">—</p></article>
+          <article><h3>Daily cost</h3><p id="sizingCost" class="metric">—</p></article>
+        </div>
+      </section>
+
+      <section id="module-air" class="card module-panel" aria-live="polite" hidden>
+        <h2>Compressed Air Loss Audit</h2>
+        <p class="help">Estimates leakage flow, annual leak energy, and leak cost burden.</p>
+        <form id="airForm" class="form-grid">
+          <label>System pressure (bar g)
+            <input id="pressure" type="number" min="1" step="0.1" value="7" required />
+          </label>
+          <label>Estimated leak opening (mm²)
+            <input id="leakArea" type="number" min="0.1" step="0.1" value="8" required />
+          </label>
+          <label>Compressor specific power (kW per m³/min)
+            <input id="specificPower" type="number" min="1" step="0.1" value="6.4" required />
+          </label>
+          <label>Operating hours/year
+            <input id="airHours" type="number" min="1" step="1" value="7000" required />
+          </label>
+          <label>Electricity price ($/kWh)
+            <input id="airPrice" type="number" min="0" step="0.001" value="0.11" required />
+          </label>
+          <button type="submit" class="btn">Run air loss audit</button>
+        </form>
+        <div class="result-grid">
+          <article><h3>Estimated leak flow</h3><p id="airFlow" class="metric">—</p></article>
+          <article><h3>Leak power demand</h3><p id="airPower" class="metric">—</p></article>
+          <article><h3>Annual leak energy</h3><p id="airEnergy" class="metric">—</p></article>
+          <article><h3>Annual leak cost</h3><p id="airCost" class="metric">—</p></article>
+        </div>
+      </section>
+
+      <section id="module-saving" class="card module-panel" aria-live="polite" hidden>
+        <h2>Energy Saving Module</h2>
+        <p class="help">Quantifies savings from baseline-to-improved specific energy performance.</p>
+        <form id="savingForm" class="form-grid">
+          <label>Baseline SEC (kWh/unit)
+            <input id="baseSec" type="number" min="0.01" step="0.01" value="5.2" required />
+          </label>
+          <label>Improved SEC (kWh/unit)
+            <input id="improvedSec" type="number" min="0.01" step="0.01" value="4.5" required />
+          </label>
+          <label>Annual production (units/year)
+            <input id="production" type="number" min="1" step="1" value="120000" required />
+          </label>
+          <label>Power tariff ($/kWh)
+            <input id="savePrice" type="number" min="0" step="0.001" value="0.11" required />
+          </label>
+          <label>Implementation cost ($)
+            <input id="projectCost" type="number" min="0" step="1" value="95000" required />
+          </label>
+          <button type="submit" class="btn">Run saving analysis</button>
+        </form>
+        <div class="result-grid">
+          <article><h3>Energy saved</h3><p id="saveEnergy" class="metric">—</p></article>
+          <article><h3>Annual cost saved</h3><p id="saveCost" class="metric">—</p></article>
+          <article><h3>CO₂ avoided*</h3><p id="saveCo2" class="metric">—</p></article>
+          <article><h3>Simple payback</h3><p id="savePayback" class="metric">—</p></article>
+        </div>
+        <p class="foot">*Uses 0.7 kg CO₂ per kWh emission factor.</p>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
